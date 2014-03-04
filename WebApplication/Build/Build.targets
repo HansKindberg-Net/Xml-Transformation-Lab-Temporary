@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<PropertyGroup>
+		<OnBeforeCollectWebConfigsToTransform>
+			BeforCollectWebConfigsToTransform;
+			$(OnBeforeCollectWebConfigsToTransform);
+		</OnBeforeCollectWebConfigsToTransform>
+		<OnAfterCollectWebConfigsToTransform>
+			AfterCollectWebConfigsToTransform;
+			$(OnAfterCollectWebConfigsToTransform)
+		</OnAfterCollectWebConfigsToTransform>
+	</PropertyGroup>
+
+	<Target Name="AfterCollectWebConfigsToTransform">
+		<Message
+			Importance="high"
+			Text="After collect web configs to transform: WebConfigsToTransform = @(WebConfigsToTransform), TransformFile = %(WebConfigsToTransform.TransformFile), TransformOutputFile = %(WebConfigsToTransform.TransformOutputFile)"
+		/>
+	</Target>
+
+	<Target Name="BeforCollectWebConfigsToTransform">
+		<Message
+			Importance="high"
+			Text="Before collect web configs to transform. $(TransformWebConfigIntermediateLocation)"
+		/>
+	</Target>
+
+	<!--
+		<ItemGroup>
+			<WebConfigsToTransform>
+				<TransformFile>$([System.String]::new($(WebPublishPipelineProjectDirectory)\$([System.IO.Path]::GetDirectoryName($([System.String]::new(%(DestinationRelativePath)))))).TrimEnd('\'))\$(ProjectConfigTransformFileName)</TransformFile>
+				<TransformOriginalFolder>$(TransformWebConfigIntermediateLocation)\original</TransformOriginalFolder>
+				<TransformFileFolder>$(TransformWebConfigIntermediateLocation)\assist</TransformFileFolder>
+				<TransformOutputFile>$(TransformWebConfigIntermediateLocation)\transformed\%(DestinationRelativePath)</TransformOutputFile>
+				<TransformScope>$([System.IO.Path]::GetFullPath($(WPPAllFilesInSingleFolder)\%(DestinationRelativePath)))</TransformScope>
+			</WebConfigsToTransform>
+		</ItemGroup>
+		-->
+
+
+</Project>

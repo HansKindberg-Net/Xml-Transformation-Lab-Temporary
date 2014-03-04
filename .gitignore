@@ -1,0 +1,13 @@
+_ReSharper*/
+bin/
+debug/
+obj/
+packages/*
+testresults/
+*.suo
+*.user
+.nuget/NuGet.exe
+
+WebApplication-Publish/
+
+!packages/repositories.config
