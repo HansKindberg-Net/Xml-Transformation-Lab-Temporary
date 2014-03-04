@@ -26,3 +26,6 @@ C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v12.0\Web\Microsoft.Web.Pu
 		</ItemGroup>
 		<CallTarget Targets="$(OnAfterCollectWebConfigsToTransform)" RunEachTargetSeparately="False" />
 	</Target>
+
+	**Also have a look at the target: ParameterizeTransformWebConfigCore**
+
