@@ -8,6 +8,7 @@ testresults/
 *.user
 .nuget/NuGet.exe
 
-WebApplication-Publish/
+WebApplication-Publish/*
 
 !packages/repositories.config
+!WebApplication-Publish/ReadMe.txt

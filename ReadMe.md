@@ -1,5 +1,7 @@
 A project for laborating with XmlTransformation. Howto hookon and change the default behaviour.
 
+I have set up a virtual machine where I can change the original targets to learn where things happen. I tried first to copy the original targets to this solution but there where to many paths to change to get it working.
+
 The XmlTransformation targets is in (depending on the VS version):
 
 C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v12.0\Web\Microsoft.Web.Publishing.targets

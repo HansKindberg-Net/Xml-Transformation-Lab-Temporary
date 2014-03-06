@@ -10,9 +10,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft-targets", "Microsoft-targets", "{B461361F-B801-452A-979C-C6DA6A94A06E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{8A4499F4-EAA9-4AC6-9DC1-93D9D1655F8F}"
 	ProjectSection(SolutionItems) = preProject
-		Microsoft-targets\Microsoft.Web.Publishing.targets = Microsoft-targets\Microsoft.Web.Publishing.targets
+		Build\ReadMe.txt = Build\ReadMe.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{B48A2D0B-812B-4EFE-BF7D-E6E3EE783FB0}"
+	ProjectSection(SolutionItems) = preProject
+		Build\Web\Microsoft.Web.Publishing.targets = Build\Web\Microsoft.Web.Publishing.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApplications", "WebApplications", "{4CA9F8C6-2090-4B5D-A4DD-C39331E568BB}"
+	ProjectSection(SolutionItems) = preProject
+		Build\WebApplications\Microsoft.WebApplication.targets = Build\WebApplications\Microsoft.WebApplication.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApplication-Publish", "WebApplication-Publish", "{2346455B-B05A-4288-88E1-3659315E858D}"
+	ProjectSection(SolutionItems) = preProject
+		WebApplication-Publish\ReadMe.txt = WebApplication-Publish\ReadMe.txt
 	EndProjectSection
 EndProject
 Global
@@ -28,5 +43,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B48A2D0B-812B-4EFE-BF7D-E6E3EE783FB0} = {8A4499F4-EAA9-4AC6-9DC1-93D9D1655F8F}
+		{4CA9F8C6-2090-4B5D-A4DD-C39331E568BB} = {8A4499F4-EAA9-4AC6-9DC1-93D9D1655F8F}
 	EndGlobalSection
 EndGlobal
