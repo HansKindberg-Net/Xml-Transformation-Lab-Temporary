@@ -1,173 +1,58 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
-		<OnAfterCollectWebConfigsToTransform>
-			CustomAfterCollectWebConfigsToTransform;
-			$(OnAfterCollectWebConfigsToTransform)
-		</OnAfterCollectWebConfigsToTransform>
-	</PropertyGroup>
-	<Target Name="CustomAfterCollectWebConfigsToTransform">
-		<Message
-			Importance="high"
-			Text="Target 'CustomAfterCollectWebConfigsToTransform': WebConfigsToTransform = @(WebConfigsToTransform), TransformFile = %(WebConfigsToTransform.TransformFile), TransformOutputFile = %(WebConfigsToTransform.TransformOutputFile)"
-		/>
-	</Target>
-	<PropertyGroup>
 		<PreTransformWebConfigDependsOn>
-			BeforePreTransformWebConfig;
-			$(PreTransformWebConfigDependsOn);
-			AfterPreTransformWebConfig;
+			HansKindberg-CollectWebConfigsToTransform;
 		</PreTransformWebConfigDependsOn>
 	</PropertyGroup>
-	
-		
-			
-			
-			
-	
-	
-		
-			
-			
-			
-	<!-- HOOKON HERE - CHANGE WHAT TO TRANSFORM -->
-	<Target Name="AfterPreTransformWebConfig">
-		<Message
-			Importance="high"
-			Text="Target 'AfterPreTransformWebConfig': WebConfigsToTransform = @(WebConfigsToTransform) - IMPORTANT - HERE WE HAVE THE FILES - START HOOOKIN"
-		/>
-		<Message
-			Importance="high"
-			Text="    - Target 'AfterPreTransformWebConfig': WebConfigsToTransform = %(WebConfigsToTransform.Identity)"
-		/>
-		<Message
-			Importance="high"
-			Text="        - Target 'AfterPreTransformWebConfig': TransformFile = %(WebConfigsToTransform.TransformFile)"
-		/>
-		<Message
-			Importance="high"
-			Text="        - Target 'AfterPreTransformWebConfig': TransformOriginalFolder = %(WebConfigsToTransform.TransformOriginalFolder)"
-		/>
-		<Message
-			Importance="high"
-			Text="        - Target 'AfterPreTransformWebConfig': TransformFileFolder = %(WebConfigsToTransform.TransformFileFolder)"
-		/>
-		<Message
-			Importance="high"
-			Text="        - Target 'AfterPreTransformWebConfig': TransformOutputFile = %(WebConfigsToTransform.TransformOutputFile)"
-		/>
-		<Message
-			Importance="high"
-			Text="        - Target 'AfterPreTransformWebConfig': TransformScope = %(WebConfigsToTransform.TransformScope)"
-		/>
-		
-		
-		
-		
-		
-		
-		
-		<Message
-			Importance="high"
-			Text="**************** YEAH ******************* - Source='@(WebConfigsToTransform)', Transform='%(TransformFile)', Destination='%(TransformOutputFile)'"
-		/>
-		
-		
-		
-		<ItemGroup>
-			<CustomOriginal Include="$(TransformWebConfigIntermediateLocation)\original\**\*" />
-			<CustomAssist Include="$(TransformWebConfigIntermediateLocation)\assist\**\*" />
-			<CustomTransformed Include="$(TransformWebConfigIntermediateLocation)\transformed\**\*" />
-		</ItemGroup>
-		<Message
-			Importance="high"
-			Text="CustomOriginal: Root = $(TransformWebConfigIntermediateLocation)\original\, %(CustomOriginal.Identity)"
-		/>
-		<Message
-			Importance="high"
-			Text="CustomAssist: Root = $(TransformWebConfigIntermediateLocation)\assist\, %(CustomAssist.Identity)"
-		/>
-		<Message
-			Importance="high"
-			Text="CustomTransformed: Root = $(TransformWebConfigIntermediateLocation)\transformed\, %(CustomTransformed.Identity)"
-		/>
-		
-	
-	
-	
-	
-	
-		<!--
-		<WebConfigsToTransform Include="@(FilesForPackagingFromProject)"
-                             Condition="'%(FilesForPackagingFromProject.Filename)%(FilesForPackagingFromProject.Extension)'=='$(ProjectConfigFileName)'">
-        <TransformFile>$([System.String]::new($(WebPublishPipelineProjectDirectory)\$([System.IO.Path]::GetDirectoryName($([System.String]::new(%(DestinationRelativePath)))))).TrimEnd('\'))\$(ProjectConfigTransformFileName)</TransformFile>
-        <TransformOriginalFolder>$(TransformWebConfigIntermediateLocation)\original</TransformOriginalFolder>
-        <TransformFileFolder>$(TransformWebConfigIntermediateLocation)\assist</TransformFileFolder>
-        <TransformOutputFile>$(TransformWebConfigIntermediateLocation)\transformed\%(DestinationRelativePath)</TransformOutputFile>
-        <TransformScope>$([System.IO.Path]::GetFullPath($(WPPAllFilesInSingleFolder)\%(DestinationRelativePath)))</TransformScope>
-      </WebConfigsToTransform>
-	  -->
-	
-	
-	
-	
-	
-	
-	
-	</Target>
-	
-		
-			
-			
-			
-	
-	
-		
-			
-			
-			
-			
-	
-	
-		
-	<Target Name="BeforePreTransformWebConfig">
-		<Message
-			Importance="high"
-			Text="Target 'BeforePreTransformWebConfig': WebConfigsToTransform = @(WebConfigsToTransform)"
-		/>
-	</Target>
-	<PropertyGroup>
-		<PostTransformWebConfigDependsOn>
-			BeforePostTransformWebConfig;
-			$(PostTransformWebConfigDependsOn); <!-- Depends on: TransformWebConfigCore; and ParameterizeTransformWebConfigCore; -->
-			AfterPostTransformWebConfig;
-		</PostTransformWebConfigDependsOn>
-	</PropertyGroup>
-	<Target Name="AfterPostTransformWebConfig">
-		<Message
-			Importance="high"
-			Text="Target 'AfterPostTransformWebConfig': WebConfigsToTransform = @(WebConfigsToTransform)"
-		/>
-	</Target>
-	<Target Name="BeforePostTransformWebConfig">
-		<Message
-			Importance="high"
-			Text="Target 'BeforePostTransformWebConfig': WebConfigsToTransform = @(WebConfigsToTransform)"
-		/>
-	</Target>
 
 
-	<!--
-		<ItemGroup>
-			<WebConfigsToTransform>
+
+
+
+
+
+
+
+
+
+	<Target Name="HansKindberg-CollectWebConfigsToTransform" DependsOnTargets="$(CollectWebConfigsToTransformDependsOn)" Condition="'$(HansKindberg-CollectWebConfigsToTransform)' != 'false'">
+		
+		
+		<Message
+			Importance="high"
+			Text="YEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH: ProjectConfigTransformFileName = $(ProjectConfigTransformFileName), ProjectConfigFileName = $(ProjectConfigFileName)"
+		/>
+
+
+		
+		
+		
+		<Message
+			Importance="high"
+			Text="YEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH: None = @(None), Content = @(Content), Resource = @(Resource), EmbeddedResource = @(EmbeddedResource)"
+		/>
+
+		<!--'%(TransformOnBuild)'-->
+		
+		
+		
+		
+		
+		
+		<!-- Gather Sources, Transforms, and Destinations for the TransformXml task -->
+		<!-- -->
+		<ItemGroup Condition="'$(ProjectConfigTransformFileName)'!=''">
+			<WebConfigsToTransform Include="@(FilesForPackagingFromProject)" Condition="'%(FilesForPackagingFromProject.Filename)%(FilesForPackagingFromProject.Extension)'=='$(ProjectConfigFileName)'">
 				<TransformFile>$([System.String]::new($(WebPublishPipelineProjectDirectory)\$([System.IO.Path]::GetDirectoryName($([System.String]::new(%(DestinationRelativePath)))))).TrimEnd('\'))\$(ProjectConfigTransformFileName)</TransformFile>
 				<TransformOriginalFolder>$(TransformWebConfigIntermediateLocation)\original</TransformOriginalFolder>
 				<TransformFileFolder>$(TransformWebConfigIntermediateLocation)\assist</TransformFileFolder>
 				<TransformOutputFile>$(TransformWebConfigIntermediateLocation)\transformed\%(DestinationRelativePath)</TransformOutputFile>
 				<TransformScope>$([System.IO.Path]::GetFullPath($(WPPAllFilesInSingleFolder)\%(DestinationRelativePath)))</TransformScope>
 			</WebConfigsToTransform>
+			<_WebConfigsToTransformOuputs Include="@(WebConfigsToTransform->'%(TransformOutputFile)')" />
 		</ItemGroup>
-		-->
-
-
+		<CallTarget Targets="$(OnAfterCollectWebConfigsToTransform)" RunEachTargetSeparately="False" />
+		<!-- -->
+	</Target>
 </Project>

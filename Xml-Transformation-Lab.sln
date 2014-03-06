@@ -30,6 +30,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApplication-Publish", "W
 		WebApplication-Publish\ReadMe.txt = WebApplication-Publish\ReadMe.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{F060A0EF-4DA3-4D18-827E-E9A47E806129}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy.cmd = Deploy.cmd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -30,3 +30,19 @@ C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v12.0\Web\Microsoft.Web.Pu
 	</Target>
 
 **Also have a look at the target: ParameterizeTransformWebConfigCore**
+
+## Visual Studio Command Prompt
+
+When I ran "MSBuild.exe" from the ordinary command prompt it opened up Visual Studio. So I tried the **Visual Studio Command Prompt** instead.
+
+- [**Visual Studio Command Prompt**](http://msdn.microsoft.com/en-us/library/ms229859.aspx)
+
+Run the **Visual Studio Command Prompt**:
+
+- C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\Shortcuts\Developer Command Prompt for VS2013
+- Right click -> Run as administrator (not sure if it is necessary, but...)
+- CD "C:\Data\Projects\Xml-Transformation-Lab"
+
+Examples:
+
+- msbuild xml-transformation-lab.sln /p:DeployOnBuild=true;PublishProfile=Debug;AllowUntrustedCertificate=true
