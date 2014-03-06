@@ -46,3 +46,47 @@ Run the **Visual Studio Command Prompt**:
 Examples:
 
 - msbuild xml-transformation-lab.sln /p:DeployOnBuild=true;PublishProfile=Debug;AllowUntrustedCertificate=true
+
+## Important
+
+<IsWebApplicationProject> in WebApplication\Build\Build.targets is important to have to be able to have a package for both WebApplications and NONE WebApplication and make the
+behaviour dependant on that: On build behaviour and On publish behaviour.
+
+Look at, for $(Configuration) dependency:
+
+- TransformWebConfigCore
+- PreTransformWebConfig
+- CollectWebConfigsToTransform
+
+and look at, for Publish profile name .configs
+
+- ProfileTransformWebConfigCore
+- PreProfileTransformWebConfig
+- CollectFilesForProfileTransformWebConfigs
+
+Look here http://www.hanselman.com/blog/TinyHappyFeatures3PublishingImprovementsChainedConfigTransformsAndDeployingASPNETAppsFromTheCommandLine.aspx
+
+**I can make a Web.config file with the same name as my Publish Profile and that transform will be run after the build transform.**
+
+Lets say you have
+
+	Web.config
+		Web.Debug.config
+		Web.Release.config
+		Web.Production.config
+
+and you have
+
+- Debug
+- Release
+
+as configurations
+
+and as Publish profile name you have
+
+- Production
+
+If the Publish profile **Production** is configured for the configuration **Release** the following happens when publishing
+
+1. Transforming with Web.Release.config is done
+2. Transforming with Web.Production.config is done
