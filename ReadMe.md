@@ -49,7 +49,7 @@ Examples:
 
 ## Important
 
-<IsWebApplicationProject> in WebApplication\Build\Build.targets is important to have to be able to have a package for both WebApplications and NONE WebApplication and make the
+&lt;IsWebApplicationProject&gt; in WebApplication\Build\Build.targets is important to have to be able to have a package for both WebApplications and NONE WebApplication and make the
 behaviour dependant on that: On build behaviour and On publish behaviour.
 
 Look at, for $(Configuration) dependency:
