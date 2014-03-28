@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<WebApplicationProjectTypeGuid Condition="$(WebApplicationProjectTypeGuid) == ''">349c5851-65df-11da-9384-00065b846f21</WebApplicationProjectTypeGuid>
+	</PropertyGroup>
+	<PropertyGroup>
+		<IsWebApplicationProject Condition="$(IsWebApplicationProject) == '' AND $(WebApplicationProjectTypeGuid) != '' AND $(ProjectTypeGuids) != ''">$(ProjectTypeGuids.Contains($(WebApplicationProjectTypeGuid)))</IsWebApplicationProject>
+		<IsWebApplicationProject Condition="$(IsWebApplicationProject) == ''">False</IsWebApplicationProject>
+	</PropertyGroup>
+
+
+
+
+
+
+	<Target Name="BuildXX">
+
+	</Target>
+
+
+	<!-- Override - begin -->
+
+
+
+	<Target
+		Name="ProfileTransformWebConfigCore"
+		Condition="'@(ProfileWebConfigsToTransform)' != '' And $(ProfileTransformWebConfigEnabled) And !$(UseParameterizeToProfileTransformWebConfig)"
+		DependsOnTargets="$(ProfileTransformWebConfigCoreDependsOn)"
+		Inputs="@(ProfileWebConfigsToTransform);%(TransformFile)"
+		Outputs="$(_ProfileWebConfigTransformOutput)"
+	>
+		<TransformXml
+			Condition="!%(Exclude)"
+			Destination="%(TransformOutputFile)"
+			Source="@(ProfileWebConfigsToTransform)"
+			SourceRootPath="$(WebPublishPipelineSourceRootDirectory)"
+			StackTrace="$(ProfileTransformWebConfigStackTraceEnabled)"
+			Transform="%(TransformFile)"
+			TransformRootPath="$(WebPublishPipelineTransformRootDirectory)"
+		/>
+	</Target>
+	<Target
+		Name="TransformWebConfigCore"
+		Condition="@(WebConfigsToTransform)!='' And $(TransformWebConfigEnabled) And !$(UseParameterizeToTransformWebConfig)"
+		DependsOnTargets="$(TransformWebConfigCoreDependsOn)"
+		Inputs="@(WebConfigsToTransform);%(TransformFile)"
+		Outputs="$(_WebConfigTransformOutput)"
+	>
+
+
+
+
+		
+		<ItemGroup>
+			<WebConfigToPreTransform Include="%(Identity)" Condition="@(XmlTransformMap->'%(Identity)') != '' And @(WebConfigsToTransform->'%(Identity)') != ''">
+				<CommonBuildTransform>@(XmlTransformMap->'%(CommonBuildTransform)')</CommonBuildTransform>
+				<CommonPublishTransform>@(XmlTransformMap->'%(CommonPublishTransform)')</CommonPublishTransform>
+				<Source>@(XmlTransformMap->'%(Source)')</Source>
+				<TransformFile>@(WebConfigsToTransform->'%(TransformFile)')</TransformFile>
+				<TransformFileFolder>@(WebConfigsToTransform->'%(TransformFileFolder)')</TransformFileFolder>
+				<TransformOriginalFolder>@(WebConfigsToTransform->'%(TransformOriginalFolder)')</TransformOriginalFolder>
+				<TransformOutputFile>@(WebConfigsToTransform->'%(TransformOutputFile)')</TransformOutputFile>
+				<TransformScope>@(WebConfigsToTransform->'%(TransformScope)')</TransformScope>
+			</WebConfigToPreTransform>
+		</ItemGroup>
+
+
+		<Message
+			Importance="high"
+			Text="WebConfigToPreTransform = '@(WebConfigToPreTransform)'"
+		/>
+
+		<!--
+		<Message
+			Importance="high"
+			Text="*****************************************************************************************%0aWebConfigToPreTransform:%0a - Identity = %(WebConfigToPreTransform.Identity)%0a - CommonBuildTransform = %(WebConfigToPreTransform.CommonBuildTransform)%0a - CommonPublishTransform = %(WebConfigToPreTransform.CommonPublishTransform)%0a - Source = %(WebConfigToPreTransform.Source)%0a - TransformFile = %(WebConfigToPreTransform.TransformFile)%0a*****************************************************************************************"
+		/>
+		-->
+		<Message
+			Importance="high"
+			Text="*****************************************************************************************%0aWebConfigToPreTransform:%0a - Identity = %(WebConfigToPreTransform.Identity)%0a - CommonBuildTransform = %(WebConfigToPreTransform.CommonBuildTransform)%0a - TransformFile = %(WebConfigToPreTransform.TransformFile)%0a*****************************************************************************************"
+		/>
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		<TransformXml
+			Condition="!%(Exclude)"
+			Destination="%(TransformOutputFile)"
+			Source="@(WebConfigsToTransform)"
+			SourceRootPath="$(WebPublishPipelineSourceRootDirectory)"
+			StackTrace="$(TransformWebConfigStackTraceEnabled)"
+			Transform="%(TransformFile)"
+			TransformRootPath="$(WebPublishPipelineTransformRootDirectory)"
+		/>
+	</Target>
+	
+	
+	
+	
+	
+	
+	
+	<!-- original - start
+	<Target Name="ProfileTransformWebConfigCore"
+		DependsOnTargets="$(ProfileTransformWebConfigCoreDependsOn)"
+		Inputs="@(ProfileWebConfigsToTransform);%(TransformFile)"
+		Outputs="$(_ProfileWebConfigTransformOutput)"
+		Condition="'@(ProfileWebConfigsToTransform)' != '' And $(ProfileTransformWebConfigEnabled) And !$(UseParameterizeToProfileTransformWebConfig)">
+
+		<TransformXml Source="@(ProfileWebConfigsToTransform)"
+					  Transform="%(TransformFile)"
+					  Destination="%(TransformOutputFile)"
+					  Condition="!%(Exclude)"
+					  StackTrace="$(ProfileTransformWebConfigStackTraceEnabled)"
+					  SourceRootPath="$(WebPublishPipelineSourceRootDirectory)"
+					  TransformRootPath="$(WebPublishPipelineTransformRootDirectory)"/>
+
+	</Target>
+	<Target Name="TransformWebConfigCore"
+			DependsOnTargets="$(TransformWebConfigCoreDependsOn)"
+			Inputs="@(WebConfigsToTransform);%(TransformFile)"
+			Outputs="$(_WebConfigTransformOutput)"
+			Condition="@(WebConfigsToTransform)!='' And $(TransformWebConfigEnabled) And !$(UseParameterizeToTransformWebConfig)">
+
+		<TransformXml Source="@(WebConfigsToTransform)"
+					  Transform="%(TransformFile)"
+					  Destination="%(TransformOutputFile)"
+					  Condition="!%(Exclude)"
+					  StackTrace="$(TransformWebConfigStackTraceEnabled)"
+					  SourceRootPath="$(WebPublishPipelineSourceRootDirectory)"
+					  TransformRootPath="$(WebPublishPipelineTransformRootDirectory)"/>
+	</Target>
+	original - end -->
+	<!-- Override - end -->
+	
+	
+	
+	
+
+	
+	
+	
+	
+
+	
+	
+	
+	
+	<!-- TEST - START -->
+	<Target Name="TestAfterBuild" AfterTargets="AfterBuild">
+		<Message
+			Importance="high"
+			Text="Target 'TestAfterBuild': IsWebApplicationProject = $(IsWebApplicationProject)"
+		/>
+	</Target>
+	<Target Name="TestBeforeBuild" BeforeTargets="BeforeBuild">
+		<Message
+			Importance="high"
+			Text="Target 'TestBeforeBuild': IsWebApplicationProject = $(IsWebApplicationProject)"
+		/>
+	</Target>
+	<!-- TEST - STOP -->
+</Project>
