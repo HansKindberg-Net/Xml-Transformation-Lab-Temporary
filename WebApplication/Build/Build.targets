@@ -72,7 +72,7 @@
 			Text="Pre-transformed $(_ProfileWebConfigPreTransformIdentity) -> Transformed $(_ProfileWebConfigPreTransformSource) using $(_ProfileWebConfigPreTransformFile) into $(_ProfileWebConfigPreTransformDestination)."
 		/>
 		<TransformXml
-			Condition="$(_ProfileTransformWebConfig)"
+			Condition="$(_TransformProfileWebConfig)"
 			Destination="$(_ProfileWebConfigTransformDestination)"
 			Source="$(_ProfileWebConfigTransformSource)"
 			SourceRootPath="$(_ProfileWebConfigTransformSourceRootPath)"
