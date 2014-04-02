@@ -141,13 +141,13 @@
 
 
 
-
 	<PropertyGroup>
 		<CollectXmlFilesToTransformOnPublishBuildDependsOn>
 			CollectXmlTransformationMapOnPublishBuild;
 		</CollectXmlFilesToTransformOnPublishBuildDependsOn>
 	</PropertyGroup>
 	<Target Name="CollectXmlFilesToTransformOnPublishBuild" DependsOnTargets="$(CollectXmlFilesToTransformOnPublishBuildDependsOn)">
+
 
 
 
@@ -241,6 +241,36 @@
 		</ItemGroup>
 
 	</Target>
+
+
+
+
+
+
+
+
+
+	<PropertyGroup>
+		<CollectXmlFilesToTransformOnPublishProfileDependsOn>
+			CollectXmlTransformationMapOnPublishProfile;
+		</CollectXmlFilesToTransformOnPublishProfileDependsOn>
+	</PropertyGroup>
+	<Target Name="CollectXmlFilesToTransformOnPublishProfile" DependsOnTargets="$(CollectXmlFilesToTransformOnPublishProfileDependsOn)">
+		
+	</Target>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
