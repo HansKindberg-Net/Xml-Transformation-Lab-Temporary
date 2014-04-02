@@ -1,23 +1,92 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<MessageImportance Condition="$(MessageImportance) == ''">High</MessageImportance>
+		<!-- To set a more suitable name for xml-transformation, not only web-config transformation. The original value is "ProfileTransformWebConfig". -->
+		<ProfileTransformWebConfigIntermediateOutput Condition="'$(ProfileTransformWebConfigIntermediateOutput)'==''">ProfileXmlTransformation</ProfileTransformWebConfigIntermediateOutput>
+		<!-- To set a more suitable name for xml-transformation, not only web-config transformation. The original value is "TransformWebConfig". -->
+		<TransformWebConfigIntermediateOutput Condition="'$(TransformWebConfigIntermediateOutput)'==''">XmlTransformation</TransformWebConfigIntermediateOutput>
+
+
+		
+		<!-- Error, Message or Warning -->
+		<XmlTransformationValidationMode Condition="$(XmlTransformationValidationMode) == ''">Warning</XmlTransformationValidationMode>
+		
+		
+		
+		
+		<WebApplicationProjectTypeGuid Condition="$(WebApplicationProjectTypeGuid) == ''">349c5851-65df-11da-9384-00065b846f21</WebApplicationProjectTypeGuid>
+		<XmlTransformationCommonBuildTransformName Condition="$(XmlTransformationCommonBuildTransformName) == ''">Build</XmlTransformationCommonBuildTransformName>
+		<XmlTransformationCommonPublishTransformName Condition="$(XmlTransformationCommonPublishTransformName) == ''">Publish</XmlTransformationCommonPublishTransformName>
+		<XmlTransformationSourceName Condition="$(XmlTransformationSourceName) == ''">Template</XmlTransformationSourceName>
+
+
+
+
+
+		
+		
+		<XmlTransformationCommonBuildTransformErrorMessage Condition="$(XmlTransformationCommonBuildTransformErrorMessage) == ''">The common-build transform file &quot;{0}&quot; does not exist.</XmlTransformationCommonBuildTransformErrorMessage>
+		<XmlTransformationCommonPublishTransformErrorMessage Condition="$(XmlTransformationCommonPublishTransformErrorMessage) == ''">The common-publish transform file &quot;{0}&quot; does not exist.</XmlTransformationCommonPublishTransformErrorMessage>
+		<XmlTransformationMapReferenceMessage Condition="$(XmlTransformationMapReferenceMessage) == ''">See the &quot;{0}&quot; metadata-property for the &quot;XmlTransformationMap&quot;-itemgroup with identity &quot;{1}&quot;.</XmlTransformationMapReferenceMessage>
+		<XmlTransformationSourceErrorMessage Condition="$(XmlTransformationSourceErrorMessage) == ''">The source file &quot;{0}&quot; does not exist.</XmlTransformationSourceErrorMessage>
+
+
+		
+
+
+		
+
+
+
+
+
+
+
+	</PropertyGroup>
+	<ItemGroup Condition="@(XmlFileExtension) == ''">
+		<!-- Case-insensitive -->
+		<XmlFileExtension Include=".config" />
+		<XmlFileExtension Include=".resx" />
+		<XmlFileExtension Include=".xml" />
+	</ItemGroup>
+	<ItemDefinitionGroup>
+		<XmlTransformationMap>
+			<CommonBuildTransform>%(RelativeDir)%(Filename).$(XmlTransformationCommonBuildTransformName)%(Extension)</CommonBuildTransform>
+			<CommonPublishTransform>%(RelativeDir)%(Filename).$(XmlTransformationCommonPublishTransformName)%(Extension)</CommonPublishTransform>
+			<!-- If the "Source" is not a project relative path it must be an absolute path. -->
+			<Source>%(RelativeDir)%(Filename).$(XmlTransformationSourceName)%(Extension)</Source>
+		</XmlTransformationMap>
+	</ItemDefinitionGroup>
 	<ItemGroup Condition="@(XmlTransformationMap) == ''">
+		<XmlTransformationMap Include="Web.config">
+			<Source>$(SolutionDir)packages\SomePackage\Configuration\Web.Template.config</Source>
+		</XmlTransformationMap>
+		<XmlTransformationMap Include="Views\Web.config" />
+
+		
+		<XmlTransformationMap Include="Test\Web.config" />
+		
+		
+		<XmlTransformationMap Include="Does\Not\Exist\Some.xml" />
+		<!--
 		<XmlTransformationMap Include="Web.config">
 			<CommonBuildTransform>Web.Build.config</CommonBuildTransform>
 			<CommonPublishTransform>Web.Publish.config</CommonPublishTransform>
 			<Source>Web.Template.config</Source>
 		</XmlTransformationMap>
-		<!--
 		<XmlTransformationMap Include="Views\Web.config">
 			<CommonBuildTransform>Web.Build.config</CommonBuildTransform>
 			<CommonPublishTransform>Views\Web.Publish.config</CommonPublishTransform>
 			<Source></Source>
 		</XmlTransformationMap>
 
-		-->
+
 		<XmlTransformationMap Include="Test\Web.config">
 			<CommonBuildTransform>Test\Web.Build.config</CommonBuildTransform>
 			<CommonPublishTransform>Test\Web.Publish.config</CommonPublishTransform>
 			<Source>Test\Web.Template.config</Source>
 		</XmlTransformationMap>
+		-->
 	</ItemGroup>
 </Project>

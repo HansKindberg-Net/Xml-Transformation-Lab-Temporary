@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="DiscoverXmlFiles">
+		<PropertyGroup>
+			<_XmlFileExtensions Condition="$(_XmlFileExtensionPatternPart) == ''">@(XmlFileExtension)</_XmlFileExtensions>
+			<!-- ?i: = case-insensitive -->
+			<_XmlFileExtensionPattern Condition="$(_XmlFileExtensionPattern) == ''">(?i:^\.($(_XmlFileExtensions.Replace(".", "").Replace(";", "|")))$)</_XmlFileExtensionPattern>
+		</PropertyGroup>
+		<ItemGroup Condition="@(XmlFile) == ''">
+			<XmlFile Include="@(None);@(Content);@(Resource);@(EmbeddedResource)" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(Extension)', '$(_XmlFileExtensionPattern)'))" />
+		</ItemGroup>
+	</Target>
+	<Target Name="ListXmlFiles">
+		<Message
+			Importance="$(MessageImportance)"
+			Text="XmlFile = %(XmlFile.Identity)"
+		/>
+	</Target>
+	<PropertyGroup>
+		<BuildDependsOn>
+			DiscoverXmlFiles;
+			<!--ListXmlFiles;-->
+		</BuildDependsOn>
+	</PropertyGroup>
+	<Target
+		Name="Build"
+		DependsOnTargets="$(BuildDependsOn)"
+	/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<Target Name="CollectWebConfigsToTransform" DependsOnTargets="$(CollectWebConfigsToTransformDependsOn)" Condition="'$(CollectWebConfigsToTransform)' != 'false'">
+		<Message
+			Importance="$(MessageImportance)"
+			Text="----- FilesForPackagingFromProject = @(FilesForPackagingFromProject)"
+		/>
+		
+		
+		
+		
+		<!-- Gather Sources, Transforms, and Destinations for the TransformXml task -->
+		<ItemGroup Condition="'$(ProjectConfigTransformFileName)'!=''">
+			<WebConfigsToTransform Include="@(FilesForPackagingFromProject)"
+								   Condition="'%(FilesForPackagingFromProject.Filename)%(FilesForPackagingFromProject.Extension)'=='$(ProjectConfigFileName)'">
+				<TransformFile>$([System.String]::new($(WebPublishPipelineProjectDirectory)\$([System.IO.Path]::GetDirectoryName($([System.String]::new(%(DestinationRelativePath)))))).TrimEnd('\'))\$(ProjectConfigTransformFileName)</TransformFile>
+				<TransformOriginalFolder>$(TransformWebConfigIntermediateLocation)\original</TransformOriginalFolder>
+				<TransformFileFolder>$(TransformWebConfigIntermediateLocation)\assist</TransformFileFolder>
+				<TransformOutputFile>$(TransformWebConfigIntermediateLocation)\transformed\%(DestinationRelativePath)</TransformOutputFile>
+				<TransformScope>$([System.IO.Path]::GetFullPath($(WPPAllFilesInSingleFolder)\%(DestinationRelativePath)))</TransformScope>
+			</WebConfigsToTransform>
+			<_WebConfigsToTransformOuputs Include="@(WebConfigsToTransform->'%(TransformOutputFile)')" />
+		</ItemGroup>
+		<CallTarget Targets="$(OnAfterCollectWebConfigsToTransform)" RunEachTargetSeparately="False" />
+	</Target>
+	<Target Name="CollectFilesForProfileTransformWebConfigs" DependsOnTargets="$(CollectFilesForProfileTransformWebConfigsDependsOn)" Condition="'$(CollectFilesForProfileTransformWebConfigs)' != 'false' And '$(PublishProfileName)' != ''">
+
+		<!-- Gather Sources, Transforms, and Destinations for the TransformXml task -->
+		<ItemGroup Condition="'$(ProjectProfileTransformFileName)'!=''">
+			<ProfileWebConfigsToTransform Include="@(FilesForPackagingFromProject)"
+								   Condition="'%(FilesForPackagingFromProject.Filename)%(FilesForPackagingFromProject.Extension)'=='$(ProjectConfigFileName)'">
+				<TransformFile>$(WebPublishPipelineProjectDirectory)\$([System.IO.Path]::GetDirectoryName($([System.String]::new(%(DestinationRelativePath)))))\$(ProjectProfileTransformFileName)</TransformFile>
+				<TransformOriginalFolder>$(ProfileTransformWebConfigIntermediateLocation)\original</TransformOriginalFolder>
+				<TransformFileFolder>$(ProfileTransformWebConfigIntermediateLocation)\assist</TransformFileFolder>
+				<TransformOutputFile>$(ProfileTransformWebConfigIntermediateLocation)\transformed\%(DestinationRelativePath)</TransformOutputFile>
+				<TransformScope>$([System.IO.Path]::GetFullPath($(WPPAllFilesInSingleFolder)\%(DestinationRelativePath)))</TransformScope>
+			</ProfileWebConfigsToTransform>
+			<_ProfileWebConfigsToTransformOuputs Include="@(ProfileWebConfigsToTransform->'%(TransformOutputFile)')" />
+		</ItemGroup>
+		<CallTarget Targets="$(OnAfterCollectFilesForProfileTransformWebConfigs)" RunEachTargetSeparately="False" />
+	</Target>
+</Project>

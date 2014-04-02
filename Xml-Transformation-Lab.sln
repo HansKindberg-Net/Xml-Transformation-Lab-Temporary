@@ -35,6 +35,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{F060A0
 		Deploy.cmd = Deploy.cmd
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HansKindberg.Build.XmlTransformation.Tests", "HansKindberg.Build.XmlTransformation.Tests\HansKindberg.Build.XmlTransformation.Tests.csproj", "{2EB15156-9A84-4FC5-854F-8CB38FDEADC8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{36240449-3553-43EA-A310-4392DF7B9E09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SomePackage", "SomePackage", "{4B1E8B60-AC78-4C5C-9D45-4AFC18FD603E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{57CFE83D-3B14-40CE-A64F-9E0E6014D715}"
+	ProjectSection(SolutionItems) = preProject
+		packages\SomePackage\Configuration\Web.Template.config = packages\SomePackage\Configuration\Web.Template.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +56,10 @@ Global
 		{97514B1C-3DBD-4449-93DD-4448192A10C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97514B1C-3DBD-4449-93DD-4448192A10C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97514B1C-3DBD-4449-93DD-4448192A10C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EB15156-9A84-4FC5-854F-8CB38FDEADC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EB15156-9A84-4FC5-854F-8CB38FDEADC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EB15156-9A84-4FC5-854F-8CB38FDEADC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EB15156-9A84-4FC5-854F-8CB38FDEADC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,5 +67,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B48A2D0B-812B-4EFE-BF7D-E6E3EE783FB0} = {8A4499F4-EAA9-4AC6-9DC1-93D9D1655F8F}
 		{4CA9F8C6-2090-4B5D-A4DD-C39331E568BB} = {8A4499F4-EAA9-4AC6-9DC1-93D9D1655F8F}
+		{4B1E8B60-AC78-4C5C-9D45-4AFC18FD603E} = {36240449-3553-43EA-A310-4392DF7B9E09}
+		{57CFE83D-3B14-40CE-A64F-9E0E6014D715} = {4B1E8B60-AC78-4C5C-9D45-4AFC18FD603E}
 	EndGlobalSection
 EndGlobal

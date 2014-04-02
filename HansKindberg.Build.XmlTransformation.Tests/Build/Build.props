@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<MessageImportance Condition="$(MessageImportance) == ''">High</MessageImportance>
+	</PropertyGroup>
+	<ItemGroup>
+		<!-- Case-insensitive -->
+		<XmlFileExtension Include=".config" />
+		<XmlFileExtension Include=".xml" />
+	</ItemGroup>
+	<PropertyGroup>
+		<_XmlFileExtensions Condition="$(_XmlFileExtensionPatternPart) == ''">@(XmlFileExtension)</_XmlFileExtensions>
+	</PropertyGroup>
+	<PropertyGroup>
+		<!-- ?i: = case-insensitive -->
+		<XmlFileExtensionPattern Condition="$(_XmlFileExtensionPattern) == ''">(?i:^\.($(_XmlFileExtensions.Replace(".", "").Replace(";", "|")))$)</XmlFileExtensionPattern>
+	</PropertyGroup>
+</Project>

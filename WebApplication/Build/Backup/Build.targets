@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<WebApplicationProjectTypeGuid Condition="$(WebApplicationProjectTypeGuid) == ''">349c5851-65df-11da-9384-00065b846f21</WebApplicationProjectTypeGuid>
+	</PropertyGroup>
+	<PropertyGroup>
+		<IsWebApplicationProject Condition="$(IsWebApplicationProject) == '' AND $(WebApplicationProjectTypeGuid) != '' AND $(ProjectTypeGuids) != ''">$(ProjectTypeGuids.Contains($(WebApplicationProjectTypeGuid)))</IsWebApplicationProject>
+		<IsWebApplicationProject Condition="$(IsWebApplicationProject) == ''">False</IsWebApplicationProject>
+	</PropertyGroup>
+	<Target
+		Name="ProfileTransformWebConfigCore"
+		Condition="@(ProfileWebConfigsToTransform) != '' And $(ProfileTransformWebConfigEnabled) And !$(UseParameterizeToProfileTransformWebConfig)"
+		DependsOnTargets="$(ProfileTransformWebConfigCoreDependsOn)"
+		Inputs="@(ProfileWebConfigsToTransform);%(TransformFile)"
+		Outputs="$(_ProfileWebConfigTransformOutput)"
+	>
+		<ItemGroup>
+			<_ProfileWebConfigToTransform Include="%(DestinationRelativePath)">
+				<Exclude>@(ProfileWebConfigsToTransform->'%(Exclude)')</Exclude>
+				<OriginalIdentity>@(ProfileWebConfigsToTransform->'%(Identity)')</OriginalIdentity>
+				<TransformFile>@(ProfileWebConfigsToTransform->'%(TransformFile)')</TransformFile>
+				<TransformFileFolder>@(ProfileWebConfigsToTransform->'%(TransformFileFolder)')</TransformFileFolder>
+				<TransformOriginalFolder>@(ProfileWebConfigsToTransform->'%(TransformOriginalFolder)')</TransformOriginalFolder>
+				<TransformOutputFile>@(ProfileWebConfigsToTransform->'%(TransformOutputFile)')</TransformOutputFile>
+				<TransformScope>@(ProfileWebConfigsToTransform->'%(TransformScope)')</TransformScope>
+			</_ProfileWebConfigToTransform>
+		</ItemGroup>
+		<ItemGroup>
+			<_ProfileWebConfigTransformationMapToExclude Include="@(XmlTransformationMap)" Exclude="@(_ProfileWebConfigToTransform)" />
+			<_ProfileWebConfigTransformationMap Include="@(XmlTransformationMap)" Exclude="@(_ProfileWebConfigTransformationMapToExclude)" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_TransformProfileWebConfig Condition="$(_TransformProfileWebConfig) == '' And !(@(ProfileWebConfigsToTransform->'%(Exclude)'))">True</_TransformProfileWebConfig>
+			<_TransformProfileWebConfig Condition="$(_TransformProfileWebConfig) == ''">False</_TransformProfileWebConfig>
+		</PropertyGroup>
+		<PropertyGroup>
+			<_PreTransformProfileWebConfig Condition="$(_PreTransformProfileWebConfig) == '' And ($(_TransformProfileWebConfig)) And @(_ProfileWebConfigTransformationMap) != '' And %(_ProfileWebConfigTransformationMap.CommonPublishTransform) != ''">True</_PreTransformProfileWebConfig>
+			<_PreTransformProfileWebConfig Condition="$(_PreTransformProfileWebConfig) == ''">False</_PreTransformProfileWebConfig>
+		</PropertyGroup>
+		<Error
+			Condition="$(_PreTransformProfileWebConfig) And !Exists('%(_ProfileWebConfigTransformationMap.CommonPublishTransform)')"
+			Text="The common-publish transform file &quot;%(_ProfileWebConfigTransformationMap.CommonPublishTransform)&quot; does not exist. See the &quot;CommonPublishTransform&quot; metadata-property for the &quot;XmlTransformationMap&quot;-itemgroup with identity &quot;%(_ProfileWebConfigTransformationMap.Identity)&quot;."
+		/>
+		<PropertyGroup>
+			<_ProfileWebConfigPreTransformDestination Condition="$(_ProfileWebConfigPreTransformDestination) == ''">%(_ProfileWebConfigToTransform.TransformOutputFile)</_ProfileWebConfigPreTransformDestination>
+			<_ProfileWebConfigPreTransformFile Condition="$(_ProfileWebConfigPreTransformFile) == ''">%(_ProfileWebConfigTransformationMap.CommonPublishTransform)</_ProfileWebConfigPreTransformFile>
+			<_ProfileWebConfigPreTransformFileRootPath Condition="$(_ProfileWebConfigPreTransformFileRootPath) == ''"></_ProfileWebConfigPreTransformFileRootPath>
+			<_ProfileWebConfigPreTransformIdentity Condition="$(_ProfileWebConfigPreTransformIdentity) == ''">%(_ProfileWebConfigToTransform.OriginalIdentity)</_ProfileWebConfigPreTransformIdentity>
+			<_ProfileWebConfigPreTransformSource Condition="$(_ProfileWebConfigPreTransformSource) == ''">%(_ProfileWebConfigToTransform.OriginalIdentity)</_ProfileWebConfigPreTransformSource>
+			<_ProfileWebConfigPreTransformSourceRootPath Condition="$(_ProfileWebConfigPreTransformSourceRootPath) == ''">$(WebPublishPipelineSourceRootDirectory)</_ProfileWebConfigPreTransformSourceRootPath>
+		</PropertyGroup>
+		<PropertyGroup>
+			<_ProfileWebConfigTransformDestination Condition="$(_ProfileWebConfigTransformDestination) == ''">$(_ProfileWebConfigPreTransformDestination)</_ProfileWebConfigTransformDestination>
+			<_ProfileWebConfigTransformFile Condition="$(_ProfileWebConfigTransformFile) == ''">%(_ProfileWebConfigToTransform.TransformFile)</_ProfileWebConfigTransformFile>
+			<_ProfileWebConfigTransformFileRootPath Condition="$(_ProfileWebConfigTransformFileRootPath) == ''">$(WebPublishPipelineTransformRootDirectory)</_ProfileWebConfigTransformFileRootPath>
+			<_ProfileWebConfigTransformSource Condition="$(_ProfileWebConfigTransformSource) == '' And $(_PreTransformProfileWebConfig)">%(_ProfileWebConfigToTransform.TransformOutputFile)</_ProfileWebConfigTransformSource>
+			<_ProfileWebConfigTransformSource Condition="$(_ProfileWebConfigTransformSource) == ''">%(_ProfileWebConfigToTransform.OriginalIdentity)</_ProfileWebConfigTransformSource>
+			<_ProfileWebConfigTransformSourceRootPath Condition="$(_ProfileWebConfigTransformSourceRootPath) == '' And !($(_PreTransformWebConfig))">$(WebPublishPipelineSourceRootDirectory)</_ProfileWebConfigTransformSourceRootPath>
+		</PropertyGroup>
+		<TransformXml
+			Condition="$(_PreTransformProfileWebConfig)"
+			Destination="$(_ProfileWebConfigPreTransformDestination)"
+			Source="$(_ProfileWebConfigPreTransformSource)"
+			SourceRootPath="$(_ProfileWebConfigPreTransformSourceRootPath)"
+			StackTrace="$(TransformWebConfigStackTraceEnabled)"
+			Transform="$(_ProfileWebConfigPreTransformFile)"
+			TransformRootPath="$(_ProfileWebConfigPreTransformFileRootPath)"
+		/>
+		<Message
+			Condition="$(_PreTransformProfileWebConfig)"
+			Importance="high"
+			Text="Pre-transformed $(_ProfileWebConfigPreTransformIdentity) -> Transformed $(_ProfileWebConfigPreTransformSource) using $(_ProfileWebConfigPreTransformFile) into $(_ProfileWebConfigPreTransformDestination)."
+		/>
+		<TransformXml
+			Condition="$(_TransformProfileWebConfig)"
+			Destination="$(_ProfileWebConfigTransformDestination)"
+			Source="$(_ProfileWebConfigTransformSource)"
+			SourceRootPath="$(_ProfileWebConfigTransformSourceRootPath)"
+			StackTrace="$(TransformWebConfigStackTraceEnabled)"
+			Transform="$(_ProfileWebConfigTransformFile)"
+			TransformRootPath="$(_ProfileWebConfigTransformFileRootPath)"
+		/>
+	</Target>
+	<Target
+		Name="TransformWebConfigCore"
+		Condition="@(WebConfigsToTransform) != '' And $(TransformWebConfigEnabled) And !$(UseParameterizeToTransformWebConfig)"
+		DependsOnTargets="$(TransformWebConfigCoreDependsOn)"
+		Inputs="@(WebConfigsToTransform);%(TransformFile)"
+		Outputs="$(_WebConfigTransformOutput)"
+	>
+		<ItemGroup>
+			<_WebConfigTransformationMapToExclude Include="@(XmlTransformationMap)" Exclude="@(WebConfigsToTransform)" />
+			<_WebConfigTransformationMap Include="@(XmlTransformationMap)" Exclude="@(_WebConfigTransformationMapToExclude)" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_TransformWebConfig Condition="$(_TransformWebConfig) == '' And !(@(WebConfigsToTransform->'%(Exclude)'))">True</_TransformWebConfig>
+			<_TransformWebConfig Condition="$(_TransformWebConfig) == ''">False</_TransformWebConfig>
+		</PropertyGroup>
+		<PropertyGroup>
+			<_PreTransformWebConfig Condition="$(_PreTransformWebConfig) == '' And ($(_TransformWebConfig)) And @(_WebConfigTransformationMap) != '' And %(_WebConfigTransformationMap.CommonBuildTransform) != ''">True</_PreTransformWebConfig>
+			<_PreTransformWebConfig Condition="$(_PreTransformWebConfig) == ''">False</_PreTransformWebConfig>
+		</PropertyGroup>
+		<Error
+			Condition="$(_PreTransformWebConfig) And !Exists('%(_WebConfigTransformationMap.CommonBuildTransform)')"
+			Text="The common-build transform file &quot;%(_WebConfigTransformationMap.CommonBuildTransform)&quot; does not exist. See the &quot;CommonBuildTransform&quot; metadata-property for the &quot;XmlTransformationMap&quot;-itemgroup with identity &quot;%(_WebConfigTransformationMap.Identity)&quot;."
+		/>
+		<Error
+			Condition="%(_WebConfigTransformationMap.Source) != '' And !Exists('%(_WebConfigTransformationMap.Source)')"
+			Text="The source file &quot;%(_WebConfigTransformationMap.Source)&quot; does not exist. See the &quot;Source&quot; metadata-property for the &quot;XmlTransformationMap&quot;-itemgroup with identity &quot;%(_WebConfigTransformationMap.Identity)&quot;."
+		/>
+		<PropertyGroup>
+			<_WebConfigPreTransformDestination Condition="$(_WebConfigPreTransformDestination) == ''">%(WebConfigsToTransform.TransformOutputFile)</_WebConfigPreTransformDestination>
+			<_WebConfigPreTransformFile Condition="$(_WebConfigPreTransformFile) == ''">%(_WebConfigTransformationMap.CommonBuildTransform)</_WebConfigPreTransformFile>
+			<_WebConfigPreTransformFileRootPath Condition="$(_WebConfigPreTransformFileRootPath) == ''"></_WebConfigPreTransformFileRootPath>
+			<_WebConfigPreTransformIdentity Condition="$(_WebConfigPreTransformIdentity) == ''">%(_WebConfigTransformationMap.Identity)</_WebConfigPreTransformIdentity>
+			<_WebConfigPreTransformSource Condition="$(_WebConfigPreTransformSource) == ''">%(_WebConfigTransformationMap.Source)</_WebConfigPreTransformSource>
+			<_WebConfigPreTransformSource Condition="$(_WebConfigPreTransformSource) == ''">%(_WebConfigTransformationMap.Identity)</_WebConfigPreTransformSource>
+			<_WebConfigPreTransformSourceRootPath Condition="$(_WebConfigPreTransformSourceRootPath) == '' And %(_WebConfigTransformationMap.Source) == ''">$(WebPublishPipelineSourceRootDirectory)</_WebConfigPreTransformSourceRootPath>
+		</PropertyGroup>
+		<PropertyGroup>
+			<_WebConfigTransformDestination Condition="$(_WebConfigTransformDestination) == ''">$(_WebConfigPreTransformDestination)</_WebConfigTransformDestination>
+			<_WebConfigTransformFile Condition="$(_WebConfigTransformFile) == ''">%(WebConfigsToTransform.TransformFile)</_WebConfigTransformFile>
+			<_WebConfigTransformFileRootPath Condition="$(_WebConfigTransformFileRootPath) == ''">$(WebPublishPipelineTransformRootDirectory)</_WebConfigTransformFileRootPath>
+			<_WebConfigTransformSource Condition="$(_WebConfigTransformSource) == '' And $(_PreTransformWebConfig)">%(WebConfigsToTransform.TransformOutputFile)</_WebConfigTransformSource>
+			<_WebConfigTransformSource Condition="$(_WebConfigTransformSource) == ''">%(WebConfigsToTransform.Identity)</_WebConfigTransformSource>
+			<_WebConfigTransformSourceRootPath Condition="$(_WebConfigTransformSourceRootPath) == '' And !($(_PreTransformWebConfig))">$(WebPublishPipelineSourceRootDirectory)</_WebConfigTransformSourceRootPath>
+		</PropertyGroup>
+		<TransformXml
+			Condition="$(_PreTransformWebConfig)"
+			Destination="$(_WebConfigPreTransformDestination)"
+			Source="$(_WebConfigPreTransformSource)"
+			SourceRootPath="$(_WebConfigPreTransformSourceRootPath)"
+			StackTrace="$(TransformWebConfigStackTraceEnabled)"
+			Transform="$(_WebConfigPreTransformFile)"
+			TransformRootPath="$(_WebConfigPreTransformFileRootPath)"
+		/>
+		<Message
+			Condition="$(_PreTransformWebConfig)"
+			Importance="high"
+			Text="Pre-transformed $(_WebConfigPreTransformIdentity) -> Transformed $(_WebConfigPreTransformSource) using $(_WebConfigPreTransformFile) into $(_WebConfigPreTransformDestination)."
+		/>
+		<TransformXml
+			Condition="$(_TransformWebConfig)"
+			Destination="$(_WebConfigTransformDestination)"
+			Source="$(_WebConfigTransformSource)"
+			SourceRootPath="$(_WebConfigTransformSourceRootPath)"
+			StackTrace="$(TransformWebConfigStackTraceEnabled)"
+			Transform="$(_WebConfigTransformFile)"
+			TransformRootPath="$(_WebConfigTransformFileRootPath)"
+		/>
+	</Target>
+</Project>
