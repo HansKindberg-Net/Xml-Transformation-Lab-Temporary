@@ -10,12 +10,13 @@
 
 
 
-
-	<BuildDependsOn Condition="$(TransformOnBuild)">
-		$(BuildDependsOn);
-		TransformXmlFiles;
-		<!--ScReplaceAppConfigItem;-->
-	</BuildDependsOn>
+	<PropertyGroup>
+		<BuildDependsOn Condition="$(TransformOnBuild)">
+			$(BuildDependsOn);
+			TransformXmlFiles;
+			<!--ScReplaceAppConfigItem;-->
+		</BuildDependsOn>
+	</PropertyGroup>
 
 	
 	
