@@ -17,6 +17,7 @@
 		<XmlTransformationSourceErrorMessage Condition="$(XmlTransformationSourceErrorMessage) == ''">The source file &quot;{0}&quot; does not exist.</XmlTransformationSourceErrorMessage>
 		<!-- Error, Message or Warning -->
 		<XmlTransformationValidationMode Condition="$(XmlTransformationValidationMode) == ''">Warning</XmlTransformationValidationMode>
+		<XmlTransformationWebApplicationSourceErrorMessage Condition="$(XmlTransformationWebApplicationSourceErrorMessage) == ''">The source must be specified for xml-transformation to work on a webapplication-project. The source can not be the same as the destination.</XmlTransformationWebApplicationSourceErrorMessage>
 	</PropertyGroup>
 	<ItemGroup Condition="@(XmlFileExtension) == ''">
 		<!-- Case-insensitive -->
