@@ -127,7 +127,7 @@
 			SourceFiles="%(_XmlFileToTransformOnPublishProfile.Original)"
 		/>
 		<ItemGroup>
-			<XmlFileToTransformOnPublishBuild Include="%(_XmlFileToTransformOnPublishProfile.Source)">
+			<XmlFileToTransformOnPublishProfile Include="%(_XmlFileToTransformOnPublishProfile.Source)">
 				<DestinationRelativePath>%(DestinationRelativePath)</DestinationRelativePath>
 				<Exclude>%(Exclude)</Exclude>
 				<PreTransform>%(PreTransform)</PreTransform>
@@ -136,8 +136,8 @@
 				<PreTransformSource>%(PreTransformSource)</PreTransformSource>
 				<TransformFile>%(TransformFile)</TransformFile>
 				<TransformOutputFile>%(TransformOutputFile)</TransformOutputFile>
-				<XmlFile>%(Identity)</XmlFile>
-			</XmlFileToTransformOnPublishBuild>
+				<XmlFile>%(DestinationRelativePath)</XmlFile>
+			</XmlFileToTransformOnPublishProfile>
 		</ItemGroup>
 	</Target>
 	<PropertyGroup>
