@@ -52,16 +52,7 @@
 
 
 
-	<PropertyGroup>
-		<CollectProjectXmlFilesDependsOn>
-			SetXmlFileExtensionRegularExpressionPattern;
-		</CollectProjectXmlFilesDependsOn>
-	</PropertyGroup>
-	<Target Name="CollectProjectXmlFiles" DependsOnTargets="$(CollectProjectXmlFilesDependsOn)">
-		<ItemGroup Condition="@(ProjectXmlFiles) == ''">
-			<ProjectXmlFiles Include="@(Content);@(EmbeddedResource);@(None);@(Resource)" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(Extension)', '$(XmlFileExtensionRegularExpressionPattern)'))" />
-		</ItemGroup>
-	</Target>
+
 	
 	
 	
@@ -93,7 +84,7 @@
 
 
 
-
+	
 
 
 
@@ -290,12 +281,12 @@
 	
 	<PropertyGroup>
 		<CollectXmlTransformationMapOnBuildDependsOn>
-			CollectProjectXmlFiles;
+			SetXmlFileExtensionRegularExpressionPattern;
 		</CollectXmlTransformationMapOnBuildDependsOn>
 	</PropertyGroup>
 	<Target Name="CollectXmlTransformationMapOnBuild" DependsOnTargets="$(CollectXmlTransformationMapOnBuildDependsOn)">
 		<ItemGroup>
-			<XmlTransformationMapOnBuild Include="@(ProjectXmlFiles)" Condition="$(TransformOnBuild)">
+			<XmlTransformationMapOnBuild Include="@(Content);@(EmbeddedResource);@(None);@(Resource)" Condition="$(TransformOnBuild) And $([System.Text.RegularExpressions.Regex]::IsMatch('%(Extension)', '$(XmlFileExtensionRegularExpressionPattern)'))">
 				<CommonBuildTransform>@(XmlTransformationMap->'%(CommonBuildTransform)')</CommonBuildTransform>
 				<Source>@(XmlTransformationMap->'%(Source)')</Source>
 				<TransformFile>%(RelativeDir)%(Filename).$(Configuration)%(Extension)</TransformFile>

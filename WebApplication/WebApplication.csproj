@@ -52,21 +52,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Test.resx</DependentUpon>
     </Compile>
-    <Content Include="Build\Backup\Build.props">
+    <None Include="Build\Backup\Build.props">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Build\Backup\Build.targets">
+    </None>
+    <None Include="Build\Backup\Build.targets">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Build\Build - Copy.targets">
+    </None>
+    <None Include="Build\Build - Copy.targets">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Build\Build.Log.props">
+    </None>
+    <None Include="Build\Build.Log.props">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Build\Build.Log.targets">
+    </None>
+    <None Include="Build\Build.Log.targets">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
     <None Include="Properties\PublishProfiles\Empty.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
