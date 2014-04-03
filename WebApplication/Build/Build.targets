@@ -4,30 +4,136 @@
 		<IsWebApplicationProject Condition="$(IsWebApplicationProject) == '' AND $(WebApplicationProjectTypeGuid) != '' AND $(ProjectTypeGuids) != ''">$(ProjectTypeGuids.Contains($(WebApplicationProjectTypeGuid)))</IsWebApplicationProject>
 		<IsWebApplicationProject Condition="$(IsWebApplicationProject) == ''">False</IsWebApplicationProject>
 	</PropertyGroup>
-
-
-	<!--
-	<Target Name="Build">
+	<PropertyGroup>
+		<CollectFilesForProfileTransformWebConfigsDependsOn>
+			CollectXmlFilesToTransformOnPublishProfile;
+			$(CollectFilesForProfileTransformWebConfigsDependsOn);
+		</CollectFilesForProfileTransformWebConfigsDependsOn>
+	</PropertyGroup>
+	<Target Name="CollectFilesForProfileTransformWebConfigs" DependsOnTargets="$(CollectFilesForProfileTransformWebConfigsDependsOn)" Condition="'$(CollectFilesForProfileTransformWebConfigs)' != 'false'">
 		<ItemGroup>
-			<Test Include="Test">
-				<Value>Test</Value>
-			</Test>
+			<ProfileWebConfigsToTransform Include="@(XmlFileToTransformOnPublishProfile)">
+				<TransformFileFolder>$(ProfileTransformWebConfigIntermediateLocation)\assist</TransformFileFolder>
+				<TransformOriginalFolder>$(ProfileTransformWebConfigIntermediateLocation)\original</TransformOriginalFolder>
+				<TransformScope>$([System.IO.Path]::GetFullPath('$(WPPAllFilesInSingleFolder)\%(DestinationRelativePath)'))</TransformScope>
+			</ProfileWebConfigsToTransform>
+			<_ProfileWebConfigsToTransformOuputs Include="@(ProfileWebConfigsToTransform->'%(TransformOutputFile)')" />
 		</ItemGroup>
-		<Message
-			Importance="high"
-			Text="Test = %(Test.Identity), Value = %(Test.Value)"
-		/>
-		<ItemGroup>
-			<Else Include="%(Test.Identity)">
-
-			</Else>
-		</ItemGroup>
-		<Message
-			Importance="high"
-			Text="Else = %(Else.Identity), Value = %(Else.Value)"
-		/>
+		<CallTarget Targets="$(OnAfterCollectFilesForProfileTransformWebConfigs)" RunEachTargetSeparately="False" />
 	</Target>
-	-->
+	<PropertyGroup>
+		<CollectWebConfigsToTransformDependsOn>
+			CollectXmlFilesToTransformOnPublishBuild;
+			$(CollectWebConfigsToTransformDependsOn);
+		</CollectWebConfigsToTransformDependsOn>
+	</PropertyGroup>
+	<Target Name="CollectWebConfigsToTransform" DependsOnTargets="$(CollectWebConfigsToTransformDependsOn)" Condition="'$(CollectWebConfigsToTransform)' != 'false'">
+		<ItemGroup>
+			<WebConfigsToTransform Include="@(XmlFileToTransformOnPublishBuild)">
+				<TransformFileFolder>$(TransformWebConfigIntermediateLocation)\assist</TransformFileFolder>
+				<TransformOriginalFolder>$(TransformWebConfigIntermediateLocation)\original</TransformOriginalFolder>
+				<TransformScope>$([System.IO.Path]::GetFullPath('$(WPPAllFilesInSingleFolder)\%(DestinationRelativePath)'))</TransformScope>
+			</WebConfigsToTransform>
+			<_WebConfigsToTransformOuputs Include="@(WebConfigsToTransform->'%(TransformOutputFile)')" />
+		</ItemGroup>
+		<CallTarget Targets="$(OnAfterCollectWebConfigsToTransform)" RunEachTargetSeparately="False" />
+	</Target>
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+
+
+
+
+	<PropertyGroup>
+		<CollectXmlFilesToTransformOnPublishBuildDependsOn>
+			CollectXmlTransformationMapOnPublishBuild;
+		</CollectXmlFilesToTransformOnPublishBuildDependsOn>
+	</PropertyGroup>
+	<Target Name="CollectXmlFilesToTransformOnPublishBuild" DependsOnTargets="$(CollectXmlFilesToTransformOnPublishBuildDependsOn)">
+		<ItemGroup>
+			<_XmlFileToTransformOnPublishBuild Include="@(XmlTransformationMapOnPublishBuild)">
+				<PreTransform>False</PreTransform>
+				<PreTransformFile></PreTransformFile>
+				<PreTransformOutputFile></PreTransformOutputFile>
+				<PreTransformSource></PreTransformSource>
+				<TransformOutputFile>$(TransformWebConfigIntermediateLocation)\transformed\%(DestinationRelativePath)</TransformOutputFile>
+			</_XmlFileToTransformOnPublishBuild>
+			<_XmlFileToTransformOnPublishBuild Condition="%(Source) == ''">
+				<Source>%(Identity)</Source>
+			</_XmlFileToTransformOnPublishBuild>
+			<_XmlFileToTransformOnPublishBuild>
+				<Original>%(Source)</Original>
+			</_XmlFileToTransformOnPublishBuild>			
+			<_XmlFileToTransformOnPublishBuild Condition="%(TransformFile) == '' And %(CommonBuildTransform) != ''">
+				<CommonBuildTransform></CommonBuildTransform>
+				<TransformFile>%(CommonBuildTransform)</TransformFile>
+			</_XmlFileToTransformOnPublishBuild>
+			<_XmlFileToTransformOnPublishBuild Condition="%(CommonBuildTransform) != ''">
+				<PreTransform>True</PreTransform>
+				<PreTransformFile>%(CommonBuildTransform)</PreTransformFile>
+				<PreTransformOutputFile>%(TransformOutputFile)</PreTransformOutputFile>
+				<PreTransformSource>%(Source)</PreTransformSource>
+				<Source>%(TransformOutputFile)</Source>
+			</_XmlFileToTransformOnPublishBuild>
+		</ItemGroup>
+		<Copy
+			Condition="!Exists('%(_XmlFileToTransformOnPublishBuild.Source)')"
+			DestinationFiles="%(_XmlFileToTransformOnPublishBuild.Source)"
+			SourceFiles="%(_XmlFileToTransformOnPublishBuild.Original)"
+		/>
+		<ItemGroup>
+			<XmlFileToTransformOnPublishBuild Include="%(_XmlFileToTransformOnPublishBuild.Source)">
+				<DestinationRelativePath>%(DestinationRelativePath)</DestinationRelativePath>
+				<Exclude>%(Exclude)</Exclude>
+				<PreTransform>%(PreTransform)</PreTransform>
+				<PreTransformFile>%(PreTransformFile)</PreTransformFile>
+				<PreTransformOutputFile>%(PreTransformOutputFile)</PreTransformOutputFile>
+				<PreTransformSource>%(PreTransformSource)</PreTransformSource>
+				<TransformFile>%(TransformFile)</TransformFile>
+				<TransformOutputFile>%(TransformOutputFile)</TransformOutputFile>
+				<XmlFile>%(Identity)</XmlFile>
+			</XmlFileToTransformOnPublishBuild>
+		</ItemGroup>
+	</Target>
+	<PropertyGroup>
+		<CollectXmlFilesToTransformOnPublishProfileDependsOn>
+			CollectXmlTransformationMapOnPublishProfile;
+		</CollectXmlFilesToTransformOnPublishProfileDependsOn>
+	</PropertyGroup>
+	<Target Name="CollectXmlFilesToTransformOnPublishProfile" DependsOnTargets="$(CollectXmlFilesToTransformOnPublishProfileDependsOn)">
+		
+	</Target>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 
 
 
@@ -38,53 +144,13 @@
 
 
 	<PropertyGroup>
-		<PreProfileTransformWebConfigDependsOn>
-			$(PreProfileTransformWebConfigDependsOn);
-			ShowXmlFilesToTransformOnPublishProfile;
-		</PreProfileTransformWebConfigDependsOn>
-		<PreTransformWebConfigDependsOn>
-			$(PreTransformWebConfigDependsOn);
-			ShowXmlFilesToTransformOnPublishBuild;
-		</PreTransformWebConfigDependsOn>
+		<CollectXmlTransformationMapOnBuildDependsOn>
+			SetXmlFileExtensionRegularExpressionPattern;
+		</CollectXmlTransformationMapOnBuildDependsOn>
 	</PropertyGroup>
-	<Target Name="ShowXmlFilesToTransformOnPublishBuild">
-		<Message
-			Importance="$(MessageImportance)"
-			Text="XmlTransformationMapOnPublishBuild%0a======================================================"
-		/>
-		<Message
-			Importance="$(MessageImportance)"
-			Text=" - %(XmlTransformationMapOnPublishBuild.Identity)%0a   - CommonBuildTransform = '%(XmlTransformationMapOnPublishBuild.CommonBuildTransform)'%0a   - Source = '%(XmlTransformationMapOnPublishBuild.Source)'%0a   - TransformFile = '%(XmlTransformationMapOnPublishBuild.TransformFile)'"
-		/>
+	<Target Name="CollectXmlTransformationMapOnBuild" DependsOnTargets="$(CollectXmlTransformationMapOnBuildDependsOn)">
 
-		<ItemGroup>
-			<!-- Clear -->
-			<_XmlFileToShow Remove="@(_XmlFileToShow)" />
-			<_XmlFileToShow Include="@(WebConfigsToTransform)" />
-		</ItemGroup>
-		<Message
-			Importance="$(MessageImportance)"
-			Text="WebConfigsToTransform%0a======================================================"
-		/>
-		<Message
-			Importance="$(MessageImportance)"
-			Text=" - %(_XmlFileToShow.Identity)%0a   - PreTransform = '%(_XmlFileToShow.PreTransform)'%0a   - PreTransformFile = '%(_XmlFileToShow.PreTransformFile)'%0a   - PreTransformOutputFile = '%(_XmlFileToShow.PreTransformOutputFile)'%0a   - PreTransformSource = '%(_XmlFileToShow.PreTransformSource)'%0a   - Transform = '%(_XmlFileToShow.Transform)'%0a   - TransformFile = '%(_XmlFileToShow.TransformFile)'%0a   - TransformOutputFile = '%(_XmlFileToShow.TransformOutputFile)'%0a   - TransformSource = '%(_XmlFileToShow.TransformSource)'%0a   - XmlFile = '%(_XmlFileToShow.XmlFile)'"
-		/>
 	</Target>
-	<Target Name="ShowXmlFilesToTransformOnPublishProfile">
-		<ItemGroup>
-			<!-- Clear -->
-			<_XmlFileToShow Remove="@(_XmlFileToShow)" />
-			<_XmlFileToShow Include="@(ProfileWebConfigsToTransform)" />
-		</ItemGroup>
-	</Target>
-
-
-
-
-
-
-
 	<PropertyGroup>
 		<CollectXmlTransformationMapOnPublishBuildDependsOn>
 			SetXmlFileExtensionRegularExpressionPattern;
@@ -137,164 +203,14 @@
 			<XmlTransformationMapOnPublishBuild Remove="@(XmlTransformationMapOnPublishBuild)" Condition="%(CommonBuildTransform) == '' And %(Source) == '' And %(TransformFile) == ''" />
 		</ItemGroup>
 	</Target>
-
-
-
-
 	<PropertyGroup>
-		<CollectXmlFilesToTransformOnPublishBuildDependsOn>
-			CollectXmlTransformationMapOnPublishBuild;
-		</CollectXmlFilesToTransformOnPublishBuildDependsOn>
+		<CollectXmlTransformationMapOnPublishProfileDependsOn>
+			SetXmlFileExtensionRegularExpressionPattern;
+		</CollectXmlTransformationMapOnPublishProfileDependsOn>
 	</PropertyGroup>
-	<Target Name="CollectXmlFilesToTransformOnPublishBuild" DependsOnTargets="$(CollectXmlFilesToTransformOnPublishBuildDependsOn)">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		<ItemGroup>
-			<XmlFileToTransformOnPublishBuild Include="@(XmlTransformationMapOnPublishBuild)">
-				<PreTransform>True</PreTransform>
-				<PreTransformFile>@(XmlTransformationMap->'%(CommonBuildTransform)')</PreTransformFile>
-				<PreTransformSource>@(XmlTransformationMap->'%(Source)')</PreTransformSource>
-				<Transform>True</Transform>
-				<TransformFile>%(RelativeDir)%(Filename).$(Configuration)%(Extension)</TransformFile>
-				<XmlFile>%(Identity)</XmlFile>
-			</XmlFileToTransformOnPublishBuild>
-		</ItemGroup>
-		<ItemGroup>
-			<!--
-			<XmlFileToTransformOnPublishBuild Include="@(FilesForPackagingFromProject)" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(Extension)', '$(XmlFileExtensionRegularExpressionPattern)'))">
-				<PreTransform>True</PreTransform>
-				<PreTransformFile>@(XmlTransformationMap->'%(CommonBuildTransform)')</PreTransformFile>
-				<PreTransformSource>@(XmlTransformationMap->'%(Source)')</PreTransformSource>
-				<Transform>True</Transform>
-				<TransformFile>%(RelativeDir)%(Filename).$(Configuration)%(Extension)</TransformFile>
-				<XmlFile>%(Identity)</XmlFile>
-			</XmlFileToTransformOnPublishBuild>
-			-->
-			<XmlFileToTransformOnPublishBuild Condition="%(PreTransformFile) != '' And !Exists('%(PreTransformFile)')">
-				<PreTransformFile></PreTransformFile>
-			</XmlFileToTransformOnPublishBuild>
-			<XmlFileToTransformOnPublishBuild Condition="%(PreTransformFile) == ''">
-				<PreTransform>False</PreTransform>
-			</XmlFileToTransformOnPublishBuild>
-			<XmlFileToTransformOnPublishBuild Condition="%(PreTransformSource) != '' And !Exists('%(PreTransformSource)')">
-				<PreTransformSource></PreTransformSource>
-			</XmlFileToTransformOnPublishBuild>
-
-			<XmlFileToTransformOnPublishBuild Condition="%(TransformFile) != '' And !Exists('%(TransformFile)')">
-				<TransformFile></TransformFile>
-			</XmlFileToTransformOnPublishBuild>
-			<XmlFileToTransformOnPublishBuild Condition="%(TransformFile) == ''">
-				<Transform>False</Transform>
-			</XmlFileToTransformOnPublishBuild>
-
-			<XmlFileToTransformOnPublishBuild Condition="!%(PreTransform) And !%(Transform)">
-				<PreTransformSource></PreTransformSource>
-			</XmlFileToTransformOnPublishBuild>
-
-			<XmlFileToTransformOnPublishBuild Condition="!%(PreTransform) And %(Transform)">
-				<PreTransformSource></PreTransformSource>
-				<TransformSource>%(PreTransformSource)</TransformSource>
-			</XmlFileToTransformOnPublishBuild>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			<!--
-			<XmlFileToTransformOnPublishBuild>
-
-				
-				
-				<PreTransformOutputFile></PreTransformOutputFile>
-				<Transform>False</Transform>
-				<TransformOutputFile></TransformOutputFile>
-				<TransformSource></TransformSource>
-			</XmlFileToTransformOnPublishBuild>
-			-->
-		</ItemGroup>
+	<Target Name="CollectXmlTransformationMapOnPublishProfile" DependsOnTargets="$(CollectXmlTransformationMapOnPublishProfileDependsOn)">
 
 	</Target>
-
-
-
-
-
-
-
-
-
-	<PropertyGroup>
-		<CollectXmlFilesToTransformOnPublishProfileDependsOn>
-			CollectXmlTransformationMapOnPublishProfile;
-		</CollectXmlFilesToTransformOnPublishProfileDependsOn>
-	</PropertyGroup>
-	<Target Name="CollectXmlFilesToTransformOnPublishProfile" DependsOnTargets="$(CollectXmlFilesToTransformOnPublishProfileDependsOn)">
-		
-	</Target>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<PropertyGroup>
-		<CollectWebConfigsToTransformDependsOn>
-			CollectXmlFilesToTransformOnPublishBuild;
-			$(CollectWebConfigsToTransformDependsOn);
-		</CollectWebConfigsToTransformDependsOn>
-	</PropertyGroup>
-	<Target Name="CollectWebConfigsToTransform" DependsOnTargets="$(CollectWebConfigsToTransformDependsOn)" Condition="'$(CollectWebConfigsToTransform)' != 'false'">
-		<ItemGroup>
-			<WebConfigsToTransform Include="@(XmlFileToTransformOnPublishBuild)" />
-		</ItemGroup>
-	</Target>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	<Target Name="SetXmlFileExtensionRegularExpressionPattern">
 		<PropertyGroup>
@@ -302,5 +218,51 @@
 			<!-- ?i: = case-insensitive -->
 			<XmlFileExtensionRegularExpressionPattern Condition="$(XmlFileExtensionRegularExpressionPattern) == ''">(?i:^\.($(_XmlFileExtensions.Replace(".", "").Replace(";", "|")))$)</XmlFileExtensionRegularExpressionPattern>
 		</PropertyGroup>
+	</Target>
+
+
+
+
+
+
+
+
+
+
+
+
+		
+			
+
+	<Target
+		Name="TransformWebConfigCore"
+		Condition="@(WebConfigsToTransform) != '' And $(TransformWebConfigEnabled) And !$(UseParameterizeToTransformWebConfig)"
+		DependsOnTargets="$(TransformWebConfigCoreDependsOn)"
+		Inputs="@(WebConfigsToTransform);%(TransformFile)"
+		Outputs="$(_WebConfigTransformOutput)"
+	>
+		<TransformXml
+			Condition="!%(Exclude) And %(PreTransform)"
+			Destination="%(PreTransformOutputFile)"
+			Source="@(WebConfigsToTransform->'%(PreTransformSource)')"
+			SourceRootPath="$(WebPublishPipelineSourceRootDirectory)"
+			StackTrace="$(TransformWebConfigStackTraceEnabled)"
+			Transform="%(PreTransformFile)"
+			TransformRootPath="$(WebPublishPipelineTransformRootDirectory)"
+		/>
+		<Message
+			Condition="!%(Exclude) And %(PreTransform)"
+			Importance="$(MessageImportance)"
+			Text="Pre-transformed @(WebConfigsToTransform->'%(PreTransformSource)') using %(PreTransformFile) into %(PreTransformOutputFile)."
+		/>
+		<TransformXml
+			Condition="!%(Exclude)"
+			Destination="%(TransformOutputFile)"
+			Source="@(WebConfigsToTransform)"
+			SourceRootPath="$(WebPublishPipelineSourceRootDirectory)"
+			StackTrace="$(TransformWebConfigStackTraceEnabled)"
+			Transform="%(TransformFile)"
+			TransformRootPath="$(WebPublishPipelineTransformRootDirectory)"
+		/>
 	</Target>
 </Project>

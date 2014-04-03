@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="Build\Build.Log.props" />
   <Import Project="Build\Build.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -58,6 +59,12 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Build\Build - Copy.targets">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Build\Build.Log.props">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Build\Build.Log.targets">
       <SubType>Designer</SubType>
     </Content>
     <None Include="Properties\PublishProfiles\Empty.pubxml" />
@@ -132,4 +139,5 @@
 	<Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
 	-->
   <Import Project="Build\Build.targets" />
+  <Import Project="Build\Build.Log.targets" />
 </Project>
