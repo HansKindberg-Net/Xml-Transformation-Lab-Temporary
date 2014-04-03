@@ -1,9 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Target
-		Name="LogXmlTransformationInformation"
-		AfterTargets="LogXmlTransformationInformationOnPublishBuild;LogXmlTransformationInformationOnPublishProfile"
-	>
+	<PropertyGroup>
+		<PreProfileTransformWebConfigDependsOn>
+			$(PreProfileTransformWebConfigDependsOn);
+			LogXmlTransformationInformationOnPublishProfile;
+		</PreProfileTransformWebConfigDependsOn>
+		<PreTransformWebConfigDependsOn>
+			$(PreTransformWebConfigDependsOn);
+			LogXmlTransformationInformationOnPublishBuild;
+		</PreTransformWebConfigDependsOn>
+	</PropertyGroup>
+	<Target Name="LogXmlTransformationInformationOnPublishBuild">
+		<ItemGroup>
+			<!-- Clear -->
+			<_WebConfigToLog Remove="@(_WebConfigToLog)" />
+			<_WebConfigToLog Include="@(WebConfigsToTransform)" />
+			<!-- Clear -->
+			<_XmlFileToLog Remove="@(_XmlFileToShow)" />
+			<_XmlFileToLog Include="@(XmlFileToTransformOnPublishBuild)" />
+			<!-- Clear -->
+			<_XmlTransformationMapToLog Remove="@(_XmlTransformationMapToLog)" />
+			<_XmlTransformationMapToLog Include="@(XmlTransformationMapOnPublishBuild)" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_WebConfigLogHeading>%0aWebConfigsToTransform%0a=====================</_WebConfigLogHeading>
+			<_XmlFileLogHeading>%0aXmlFileToTransformOnPublishBuild%0a================================</_XmlFileLogHeading>
+			<_XmlTransformationMapLogHeading>%0aXmlTransformationMapOnPublishBuild%0a==================================</_XmlTransformationMapLogHeading>
+		</PropertyGroup>
 		<Message
 			Importance="$(LogMessageImportance)"
 			Text="$(_XmlTransformationMapLogHeading)"
@@ -47,31 +70,7 @@
 			Text=" - EMPTY"
 		/>
 	</Target>
-	<Target
-		Name="LogXmlTransformationInformationOnPublishBuild"
-		AfterTargets="CollectWebConfigsToTransform"
-	>
-		<ItemGroup>
-			<!-- Clear -->
-			<_WebConfigToLog Remove="@(_WebConfigToLog)" />
-			<_WebConfigToLog Include="@(WebConfigsToTransform)" />
-			<!-- Clear -->
-			<_XmlFileToLog Remove="@(_XmlFileToShow)" />
-			<_XmlFileToLog Include="@(XmlFileToTransformOnPublishBuild)" />
-			<!-- Clear -->
-			<_XmlTransformationMapToLog Remove="@(_XmlTransformationMapToLog)" />
-			<_XmlTransformationMapToLog Include="@(XmlTransformationMapOnPublishBuild)" />
-		</ItemGroup>
-		<PropertyGroup>
-			<_WebConfigLogHeading>%0aWebConfigsToTransform%0a=====================</_WebConfigLogHeading>
-			<_XmlFileLogHeading>%0aXmlFileToTransformOnPublishBuild%0a================================</_XmlFileLogHeading>
-			<_XmlTransformationMapLogHeading>%0aXmlTransformationMapOnPublishBuild%0a==================================</_XmlTransformationMapLogHeading>
-		</PropertyGroup>
-	</Target>
-	<Target
-		Name="LogXmlTransformationInformationOnPublishProfile"
-		AfterTargets="CollectFilesForProfileTransformWebConfigs"
-	>
+	<Target Name="LogXmlTransformationInformationOnPublishProfile">
 		<ItemGroup>
 			<!-- Clear -->
 			<_WebConfigToLog Remove="@(_WebConfigToLog)" />
@@ -88,5 +87,47 @@
 			<_XmlFileLogHeading>%0aXmlFileToTransformOnPublishProfile%0a==================================</_XmlFileLogHeading>
 			<_XmlTransformationMapLogHeading>%0aXmlTransformationMapOnPublishProfile%0a====================================</_XmlTransformationMapLogHeading>
 		</PropertyGroup>
+		<Message
+			Importance="$(LogMessageImportance)"
+			Text="$(_XmlTransformationMapLogHeading)"
+		/>
+		<Message
+			Condition="@(_XmlTransformationMapToLog) != ''"
+			Importance="$(LogMessageImportance)"
+			Text=" - %(_XmlTransformationMapToLog.Identity)%0a   - CommonBuildTransform = '%(_XmlTransformationMapToLog.CommonBuildTransform)'%0a   - Source = '%(_XmlTransformationMapToLog.Source)'%0a   - TransformFile = '%(_XmlTransformationMapToLog.TransformFile)'"
+		/>
+		<Message
+			Condition="@(_XmlTransformationMapToLog) == ''"
+			Importance="$(LogMessageImportance)"
+			Text=" - EMPTY"
+		/>
+		<Message
+			Importance="$(LogMessageImportance)"
+			Text="$(_XmlFileLogHeading)"
+		/>
+		<Message
+			Condition="@(_XmlFileToLog) != ''"
+			Importance="$(LogMessageImportance)"
+			Text=" - %(_XmlFileToLog.Identity)%0a   - DestinationRelativePath = '%(_XmlFileToLog.DestinationRelativePath)'%0a   - Exclude = '%(_XmlFileToLog.Exclude)'%0a   - PreTransform = '%(_XmlFileToLog.PreTransform)'%0a   - PreTransformFile = '%(_XmlFileToLog.PreTransformFile)'%0a   - PreTransformOutputFile = '%(_XmlFileToLog.PreTransformOutputFile)'%0a   - PreTransformSource = '%(_XmlFileToLog.PreTransformSource)'%0a   - TransformFile = '%(_XmlFileToLog.TransformFile)'%0a   - TransformOutputFile = '%(_XmlFileToLog.TransformOutputFile)'%0a   - XmlFile = '%(_XmlFileToLog.XmlFile)'"
+		/>
+		<Message
+			Condition="@(_XmlFileToLog) == ''"
+			Importance="$(LogMessageImportance)"
+			Text=" - EMPTY"
+		/>
+		<Message
+			Importance="$(LogMessageImportance)"
+			Text="$(_WebConfigLogHeading)"
+		/>
+		<Message
+			Condition="@(_WebConfigToLog) != ''"
+			Importance="$(LogMessageImportance)"
+			Text=" - %(_WebConfigToLog.Identity)%0a   - DestinationRelativePath = '%(_WebConfigToLog.DestinationRelativePath)'%0a   - Exclude = '%(_WebConfigToLog.Exclude)'%0a   - PreTransform = '%(_WebConfigToLog.PreTransform)'%0a   - PreTransformFile = '%(_WebConfigToLog.PreTransformFile)'%0a   - PreTransformOutputFile = '%(_WebConfigToLog.PreTransformOutputFile)'%0a   - PreTransformSource = '%(_WebConfigToLog.PreTransformSource)'%0a   - TransformFile = '%(_WebConfigToLog.TransformFile)'%0a   - TransformFileFolder = '%(_WebConfigToLog.TransformFileFolder)'%0a   - TransformOriginalFolder = '%(_WebConfigToLog.TransformOriginalFolder)'%0a   - TransformOutputFile = '%(_WebConfigToLog.TransformOutputFile)'%0a   - TransformScope = '%(_WebConfigToLog.TransformScope)'%0a   - XmlFile = '%(_WebConfigToLog.XmlFile)'"
+		/>
+		<Message
+			Condition="@(_WebConfigToLog) == ''"
+			Importance="$(LogMessageImportance)"
+			Text=" - EMPTY"
+		/>
 	</Target>
 </Project>
