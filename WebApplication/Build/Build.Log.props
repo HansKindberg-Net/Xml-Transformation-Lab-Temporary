@@ -7,7 +7,9 @@
 		<XmlTransformationMap Include="Web.config">
 			<Source>$(SolutionDir)packages\SomePackage\Configuration\Web.Template.config</Source>
 		</XmlTransformationMap>
-		<XmlTransformationMap Include="Views\Web.config" />
+		<XmlTransformationMap Include="Views\Web.config">
+			<Source></Source>
+		</XmlTransformationMap>
 		<XmlTransformationMap Include="Test\Web.config" />
 		<XmlTransformationMap Include="Does\Not\Exist\Some.xml" />
 		<!--

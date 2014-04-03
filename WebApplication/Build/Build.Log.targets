@@ -39,7 +39,7 @@
 		<Message
 			Condition="@(XmlFileToTransformOnBuild) != ''"
 			Importance="$(LogMessageImportance)"
-			Text=" - %(XmlFileToTransformOnBuild.Identity)%0a   - DestinationRelativePath = '%(XmlFileToTransformOnBuild.DestinationRelativePath)'%0a   - Exclude = '%(XmlFileToTransformOnBuild.Exclude)'%0a   - PreTransform = '%(XmlFileToTransformOnBuild.PreTransform)'%0a   - PreTransformFile = '%(XmlFileToTransformOnBuild.PreTransformFile)'%0a   - PreTransformOutputFile = '%(XmlFileToTransformOnBuild.PreTransformOutputFile)'%0a   - PreTransformSource = '%(XmlFileToTransformOnBuild.PreTransformSource)'%0a   - TransformFile = '%(XmlFileToTransformOnBuild.TransformFile)'%0a   - TransformOutputFile = '%(XmlFileToTransformOnBuild.TransformOutputFile)'%0a   - XmlFile = '%(XmlFileToTransformOnBuild.XmlFile)'"
+			Text=" - %(XmlFileToTransformOnBuild.Identity)%0a   - PreTransform = '%(XmlFileToTransformOnBuild.PreTransform)'%0a   - PreTransformFile = '%(XmlFileToTransformOnBuild.PreTransformFile)'%0a   - PreTransformOutputFile = '%(XmlFileToTransformOnBuild.PreTransformOutputFile)'%0a   - PreTransformSource = '%(XmlFileToTransformOnBuild.PreTransformSource)'%0a   - TransformFile = '%(XmlFileToTransformOnBuild.TransformFile)'%0a   - TransformOutputFile = '%(XmlFileToTransformOnBuild.TransformOutputFile)'"
 		/>
 		<Message
 			Condition="@(XmlFileToTransformOnBuild) == ''"
