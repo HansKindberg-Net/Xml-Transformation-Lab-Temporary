@@ -114,10 +114,7 @@
 
 
 
-		<Message
-		Importance="high"
-		Text="#_#_#_#_#_#_ PreTransform = %(XmlFileToTransformOnBuild.PreTransform)"
-			/>
+
 		
 		
 		
@@ -587,39 +584,25 @@
 		Name="TransformXmlFiles"
 		DependsOnTargets="$(TransformXmlFilesDependsOn)"
 	>
-		<!--
 		<TransformXml
-			Condition="%(PreTransform)"
-			Destination="%(PreTransformOutputFile)"
-			Source="@(XmlFileToTransformOnBuild->'%(PreTransformSource)')"
-			Transform="%(PreTransformFile)"
+			Condition="%(XmlFileToTransformOnBuild.PreTransform)"
+			Destination="%(XmlFileToTransformOnBuild.PreTransformOutputFile)"
+			Source="%(XmlFileToTransformOnBuild.PreTransformSource)"
+			Transform="%(XmlFileToTransformOnBuild.PreTransformFile)"
 		/>
-		-->
-
-		
-		
-		
-		
-		
-		
-		
-
 		<Message
 			Condition="%(XmlFileToTransformOnBuild.PreTransform)"
 			Importance="$(MessageImportance)"
-			Text="Pre-transformed %(XmlFileToTransformOnBuild.PreTransformSource) using %(PreTransformFile) into %(PreTransformOutputFile)."
+			Text="Pre-transformed %(XmlFileToTransformOnBuild.PreTransformSource) using %(XmlFileToTransformOnBuild.PreTransformFile) into %(XmlFileToTransformOnBuild.PreTransformOutputFile)."
 		/>
-
-		<!--
 		<TransformXml
-			Destination="%(TransformOutputFile)"
-			Source="@(XmlFileToTransformOnBuild)"
-			Transform="%(TransformFile)"
+			Destination="%(XmlFileToTransformOnBuild.TransformOutputFile)"
+			Source="%(XmlFileToTransformOnBuild.Identity)"
+			Transform="%(XmlFileToTransformOnBuild.TransformFile)"
 		/>
-		-->
 		<Message
 			Importance="$(MessageImportance)"
-			Text="Transformed @(XmlFileToTransformOnBuild) using %(TransformFile) into %(TransformOutputFile)."
+			Text="Transformed %(XmlFileToTransformOnBuild.Identity) using %(XmlFileToTransformOnBuild.TransformFile) into %(XmlFileToTransformOnBuild.TransformOutputFile)."
 		/>
 	</Target>
 </Project>
