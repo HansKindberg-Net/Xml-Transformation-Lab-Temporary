@@ -4,6 +4,7 @@
 		<MessageImportance Condition="$(MessageImportance) == ''">High</MessageImportance>
 		<!-- To set a more suitable name for xml-transformation, not only web-config transformation. The original value is "ProfileTransformWebConfig". -->
 		<ProfileTransformWebConfigIntermediateOutput Condition="'$(ProfileTransformWebConfigIntermediateOutput)'==''">ProfileXmlTransformation</ProfileTransformWebConfigIntermediateOutput>
+		<TransformOnBuild Condition="$(TransformOnBuild) == ''">True</TransformOnBuild>
 		<!-- To set a more suitable name for xml-transformation, not only web-config transformation. The original value is "TransformWebConfig". -->
 		<TransformWebConfigIntermediateOutput Condition="'$(TransformWebConfigIntermediateOutput)'==''">XmlTransformation</TransformWebConfigIntermediateOutput>
 		<WebApplicationProjectTypeGuid Condition="$(WebApplicationProjectTypeGuid) == ''">349c5851-65df-11da-9384-00065b846f21</WebApplicationProjectTypeGuid>
