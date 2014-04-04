@@ -12,6 +12,8 @@
 		<XmlTransformationCommonBuildTransformErrorMessage Condition="$(XmlTransformationCommonBuildTransformErrorMessage) == ''">The common-build transform file &quot;{0}&quot; does not exist.</XmlTransformationCommonBuildTransformErrorMessage>
 		<XmlTransformationCommonPublishTransformName Condition="$(XmlTransformationCommonPublishTransformName) == ''">Publish</XmlTransformationCommonPublishTransformName>
 		<XmlTransformationCommonPublishTransformErrorMessage Condition="$(XmlTransformationCommonPublishTransformErrorMessage) == ''">The common-publish transform file &quot;{0}&quot; does not exist.</XmlTransformationCommonPublishTransformErrorMessage>
+		<!-- Output path to use for transformed App.config. -->
+		<XmlTransformationIntermediate Condition="$(XmlTransformationIntermediate) == ''">$(IntermediateOutputPath)XmlTransformation\</XmlTransformationIntermediate>
 		<XmlTransformationMapReferenceMessage Condition="$(XmlTransformationMapReferenceMessage) == ''">See the &quot;{0}&quot; metadata-property for the &quot;XmlTransformationMap&quot;-itemgroup with identity &quot;{1}&quot;.</XmlTransformationMapReferenceMessage>
 		<XmlTransformationSourceName Condition="$(XmlTransformationSourceName) == ''">Template</XmlTransformationSourceName>
 		<XmlTransformationSourceErrorMessage Condition="$(XmlTransformationSourceErrorMessage) == ''">The source file &quot;{0}&quot; does not exist.</XmlTransformationSourceErrorMessage>

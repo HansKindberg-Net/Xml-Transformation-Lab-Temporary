@@ -66,6 +66,7 @@
 				<DependentUpon>%(_XmlFileToTransformOnBuildIntermediate.DependentUpon)</DependentUpon>
 				<Destination>%(_XmlFileToTransformOnBuildIntermediate.Identity)</Destination>
 				<HasXmlTransformationMap>%(_XmlFileToTransformOnBuildIntermediate.HasXmlTransformationMap)</HasXmlTransformationMap>
+				<IsAppConfig>False</IsAppConfig>
 				<PreTransform>%(_XmlFileToTransformOnBuildIntermediate.PreTransform)</PreTransform>
 				<Source>%(_XmlFileToTransformOnBuildIntermediate.Source)</Source>
 				<Transform>%(_XmlFileToTransformOnBuildIntermediate.Transform)</Transform>
@@ -74,15 +75,15 @@
 			<_XmlFileToTransformOnBuild Condition="!$(IsWebApplicationProject) And %(Source) == ''">
 				<Source>%(Identity)</Source>
 			</_XmlFileToTransformOnBuild>
-
-			<!--
-				We must have a destination for non webapplications, look at slow-cheetah how they have done.
-				
-				<_XmlFileToTransformOnBuild Condition="!$(IsWebApplicationProject)">
-					<Destination>?????????????</Destination>
-				</_XmlFileToTransformOnBuild>
-			-->
-			
+			<_XmlFileToTransformOnBuild Condition="!$(IsWebApplicationProject) And '%(Filename)%(Extension)' == 'App.config'">
+				<IsAppConfig>True</IsAppConfig>
+			</_XmlFileToTransformOnBuild>
+			<_XmlFileToTransformOnBuild Condition="!$(IsWebApplicationProject) And !%(IsAppConfig)">
+				<Destination>$(OutDir)%(RelativeDir)%(Filename)%(Extension)</Destination>
+			</_XmlFileToTransformOnBuild>
+			<_XmlFileToTransformOnBuild Condition="!$(IsWebApplicationProject) And %(IsAppConfig)">
+				<Destination>$(XmlTransformationIntermediate)%(Filename)%(Extension)</Destination>
+			</_XmlFileToTransformOnBuild>
 			<_XmlFileToTransformOnBuild Remove="@(_XmlFileToTransformOnBuild)" Condition="$(IsWebApplicationProject) And !%(HasXmlTransformationMap) And %(Source) == ''" />
 		</ItemGroup>
 		<Error
@@ -124,6 +125,12 @@
 			Importance="$(MessageImportance)"
 			Text="$([System.String]::Format('$(XmlTransformationSourceErrorMessage)', %(_XmlFileToTransformOnBuild.Source))) $([System.String]::Format('$(XmlTransformationMapReferenceMessage)', 'Source', %(_XmlFileToTransformOnBuild.Identity)))"
 		/>
+		<ItemGroup>
+			<_AppConfigToTransformOnBuild Include="@(_XmlFileToTransformOnBuild)" Condition="%(IsAppConfig)" />
+		</ItemGroup>
+		<PropertyGroup>
+			<AppConfig Condition="@(_AppConfigToTransformOnBuild) != ''">%(_XmlFileToTransformOnBuild.Destination)</AppConfig>
+		</PropertyGroup>
 		<ItemGroup>
 			<_XmlFileToTransformOnBuild Condition="%(PreTransform) != '' And !Exists('%(PreTransform)')">
 				<PreTransform></PreTransform>
