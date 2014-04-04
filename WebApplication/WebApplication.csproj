@@ -52,15 +52,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Test.resx</DependentUpon>
     </Compile>
-    <None Include="Build\Backup\Build.props">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Build\Backup\Build.targets">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Build\Build - Copy.targets">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Build\Build.Log.props">
       <SubType>Designer</SubType>
     </None>
