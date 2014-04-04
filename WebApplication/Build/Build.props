@@ -26,20 +26,6 @@
 		<XmlFileExtension Include=".xml" />
 	</ItemGroup>
 	<ItemDefinitionGroup>
-		<Content>
-			<DependentUpon></DependentUpon>
-		</Content>
-		<EmbeddedResource>
-			<DependentUpon></DependentUpon>
-		</EmbeddedResource>
-		<None>
-			<DependentUpon></DependentUpon>
-		</None>
-		<Resource>
-			<DependentUpon></DependentUpon>
-		</Resource>
-	</ItemDefinitionGroup>
-	<ItemDefinitionGroup>
 		<XmlTransformationMap>
 			<CommonBuildTransform>%(RelativeDir)%(Filename).$(XmlTransformationCommonBuildTransformName)%(Extension)</CommonBuildTransform>
 			<CommonPublishTransform>%(RelativeDir)%(Filename).$(XmlTransformationCommonPublishTransformName)%(Extension)</CommonPublishTransform>
